@@ -46,7 +46,14 @@ async function run() {
          const id = req.params.id;
          const query = { _id: new ObjectId(id) };
          const result = await reviewsCollection.findOne(query);
-         console.log(res.send(result));
+         res.send(result);
+      });
+      app.patch("/review/:id", async (req, res) => {
+         const id = req.params.id;
+         const query = { _id: new ObjectId(id) };
+         const updatedData = req.body;
+         const result = await reviewsCollection.updateOne(query, updatedData);
+         res.send(result);
       });
       // app.get("/watchList", async (req, res) => {
       //    const result = (await watchListCollection.find().toArray()) || [];
