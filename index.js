@@ -1,8 +1,5 @@
-try {
-   require("dotenv").config();
-} catch (error) {
-   console.error("Module not found:", error.message);
-}
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -22,7 +19,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
    try {
-      await client.connect();
+      // await client.connect();
       console.log("Successfully connected");
 
       const database = client.db("chillGamerDB");
@@ -36,7 +33,23 @@ async function run() {
 
       // get all reviews
       app.get("/reviews", async (req, res) => {
-         const result = (await reviewsCollection.find().toArray()) || [];
+         const { filterBy, sortBy } = req.query;
+         let query = {};
+         let sort = {};
+
+         // applying filter
+         if (filterBy === "action") query.gameType = "Action";
+         else if (filterBy === "RPG") query.gameType = "RPG";
+         else if (filterBy === "adventure") query.gameType = "adventure";
+         else if (filterBy === "strategy") query.gameType = "Strategy";
+         else if (filterBy === "simulation") query.gameType = "Simulation";
+
+         // applying sort functionality
+         if (sortBy === "rating") sort.rating = -1;
+         else if (sortBy === "year") sort.publishingYear = -1;
+
+         const result =
+            (await reviewsCollection.find(query).sort(sort).toArray()) || [];
          res.send(result);
       });
 
