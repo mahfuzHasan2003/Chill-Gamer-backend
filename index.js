@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -40,7 +39,7 @@ async function run() {
          // applying filter
          if (filterBy === "action") query.gameType = "Action";
          else if (filterBy === "RPG") query.gameType = "RPG";
-         else if (filterBy === "adventure") query.gameType = "adventure";
+         else if (filterBy === "adventure") query.gameType = "Adventure";
          else if (filterBy === "strategy") query.gameType = "Strategy";
          else if (filterBy === "simulation") query.gameType = "Simulation";
 
